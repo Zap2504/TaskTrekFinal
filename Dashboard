@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="sidebar">
+      <div class="logo"></div>
+      <ul class="menu">
+        <li class="active">
+          <a href="#" class="button" id="dashboardBtn">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="menuBtn">
+            <link rel="stylesheet" href="style1.css"/>
+            <i class="fas fa-bars"></i>
+            <span>Menu</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="profileBtn">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="membersBtn">
+            <i class="fas fa-users"></i>
+            <span>Members</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="cardsBtn">
+            <i class="fas fa-th"></i>
+            <span>Cards</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="calendarBtn">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="button" id="faqBtn">
+            <i class="fas fa-question-circle"></i>
+            <span>FAQ</span>
+          </a>
+        </li>
+        <li class ="logout">
+          <a href="#">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="main-content" id="dashboardPage">
+      <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+      <p>This is the dashboard page content.</p>
+    </div>
+    <div class="main-content" id="menuPage" style="display:none;">
+      <h2><i class="fas fa-bars"></i> Menu</h2>
+      <p>This is the menu page content.</p>
+    </div>
+    <div class="main-content" id="profilePage" style="display:none;">
+      <h2><i class="fas fa-user"></i> Profile</h2>
+      <p>This is the profile page content.</p>
+    </div>
+    <div class="main-content" id="membersPage" style="display:none;">
+      <h2><i class="fas fa-users"></i> Members</h2>
+      <p>This is the members page content.</p>
+    </div>
+    <div class="main-content" id="cardsPage" style="display:none;">
+      <h2><i class="fas fa-th"></i> Cards</h2>
+      <div id="cardsContainer"></div>
+    </div>
+    <div class="main-content" id="calendarPage" style="display:none;">
+      <h2><i class="fas fa-calendar-alt"></i> Calendar</h2>
+      <p>This is the calendar page content.</p>
+    </div>
+    <div class="main-content" id="faqPage" style="display:none;">
+      <h2><i class="fas fa-question-circle"></i> FAQ</h2>
+      <p>This is the FAQ page content.</p>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll('.button');
+      const pages = document.querySelectorAll('.main-content');
+      const menuBtn = document.getElementById('menuBtn');
+      menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('menu-open');
+      });
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          const pageId = button.id.replace('Btn', 'Page');
+          pages.forEach(page => {
+            page.style.display = 'none';
+          });
+          document.getElementById(pageId).style.display = 'block';
+          document.querySelector('.active').classList.remove('active');
+          button.parentElement.classList.add('active');
+        });
+      });
+
+      const cardsBtn = document.getElementById('cardsBtn');
+      const cardsContainer = document.getElementById('cardsContainer');
+      const cardContainer = document.querySelector('.card-container');
+
+      cardsBtn.addEventListener('click', () => {
+        cardsContainer.innerHTML = '';
+        const cardTypes = ['To Do', 'Doing', 'Done'];
+        cardTypes.forEach(type => {
+          const card = document.createElement('div');
+          card.classList.add('card');
+          card.innerHTML = `
+            <h3>${type}</h3>
+            <div class="tasks" id="${type.toLowerCase()}Tasks"></div>
+            <input type="text" id="new${type}Task" placeholder="Add new task...">
+            <button onclick="addTask('${type.toLowerCase()}')">Add</button>
+          `;
+          cardsContainer.appendChild(card);
+        });
+        cardContainer.style.display = 'block';
+      });
+
+      function addTask(type) {
+        const taskInput = document.getElementById(`new${type.charAt(0).toUpperCase() + type.slice(1)}Task`);
+        const taskText = taskInput.value.trim();
+        if (taskText !== '') {
+          const tasksContainer = document.getElementById(`${type}Tasks`);
+          const taskItem = document.createElement('div');
+          taskItem.classList.add('task');
+          taskItem.textContent = taskText;
+          tasksContainer.appendChild(taskItem);
+          taskInput.value = '';
+        }
+      }
+    </script>
+</body>
+</html>
